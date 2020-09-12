@@ -1,0 +1,26 @@
+{
+    "name": "svodya/payzone",
+    "description": "A laravel package for accepting payments with payzone uk payment integrations. This will accept payments on our ecommerce platform.",
+    "type": "library",
+    "license": "MIT 2.0",
+    "authors": [
+        {
+            "name": "Nitish Kaundil",
+            "email": "nitishk879@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Svodya\\PayZone\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Svodya\\PayZone\\PayZoneServiceProvider"
+            ]
+        }
+    }
+}
