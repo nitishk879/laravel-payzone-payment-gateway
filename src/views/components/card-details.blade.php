@@ -26,11 +26,11 @@
             </div>
             <div id='CardSectionTop'>
                 <div class="form-row mb-3">
-                    <div class="col-md-6">
+                    <div class="col-md-12">
                         <label for='CardName'>Card Name</label>
-                        <input type="text" class="form-control form-control-sm" id="CardName" name="CardName" value="{{ $checkout['CustomerName'] ?? '' }}"/>
+                        <input type="text" class="form-control form-control-sm" id="CardName" placeholder="John Doe" name="CardName" value="{{ $checkout['CustomerName'] ?? '' }}"/>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-12">
                         <label for='CardNumber'>Card Number</label>
                         <input type="tel" class="form-control form-control-sm masked" name="CardNumber" id="CardNumber" value="4976 3500 0000 6891" placeholder="XXXX XXXX XXXX XXXX" pattern="\d{4} \d{4} \d{4} \d{4}"/>
                     </div>
@@ -39,7 +39,7 @@
             <div class="form-row mb-3">
                 <div class='form-group col-md-12 cvv-wrap'>
                     <label for='CV2'>CV2</label>
-                    <input type="text" name="CV2" value="341" id="CV2" maxlength="4" onkeypress='return event.charCode >= 48 && event.charCode <= 57'/>
+                    <input type="text" name="CV2" class="form-control form-control-sm" value="341" id="CV2" maxlength="4" onkeypress='return event.charCode >= 48 && event.charCode <= 57'/>
                 </div>
                 <div class="form-group col-md-12" id="CardSectionBottom">
                     <div class="form-row">

@@ -1,0 +1,226 @@
+$font-family: 'Nunito';
+$theme-color: #B80060;
+$theme-alt-color: #0C3158;
+html {
+    font-family: $font-family;
+    line-height: 1.15;
+    -webkit-text-size-adjust: 100%;
+    body {
+        margin: 0;
+        background: #1a202c;
+        font-family: $font-family;
+        line-height: 1.5;
+    }
+    a {
+        background-color: transparent;
+        color: inherit;
+        text-decoration: inherit;
+    }
+
+    [hidden] {
+        display: none;
+    }
+    *, :after, :before {
+        box-sizing: border-box;
+        border: 0 solid #e2e8f0;
+    }
+    svg, video {
+        display: block;
+        vertical-align: middle
+    }
+
+    video {
+        max-width: 100%;
+        height: auto
+    }
+    .payzone-loading-wrap{
+        height: 100%;
+        width: 100%;
+        max-width: 100% !important;
+        position: absolute;
+        border-color: #4a5568;
+        img{
+            width: 100%;
+            max-width: 100% !important;
+            display: block;
+        }
+    }
+    .payzone-form{
+        word-wrap: break-word;
+        padding: .25rem .75rem;
+        border: .25px solid rgb(226, 232, 240)!important;
+        box-shadow: 0 .5rem 1rem rgba(255,255,255,.15) !important;
+    }
+    .card{
+        color: white!important;
+        background-color: rgba(26, 32, 44, .72)!important;
+        border: .25px solid rgb(226, 232, 240)!important;
+    }
+    .form-control, .custom-select{
+        color: $theme-color!important;
+        background-color: rgba(26, 32, 44, .72)!important;
+        border-color: $theme-color!important;
+    }
+    input[type="submit"]{
+        background: transparent;
+        color: white;
+        border: 1px solid $theme-color;
+        padding: .5rem .75rem;
+        &:hover{
+            background: $theme-color;
+            color: white;
+            border-color: lighten($theme-color, 2.5%);
+        }
+    }
+    #payzone-payment-modal-background, #payzone-loading-modal-background{
+        display: none;
+        height: 100%;
+        width: 100%;
+        max-width: 100% !important;
+        background: rgba(26, 32, 44, .72);
+        position: fixed;
+        transition: opacity 0.5s;
+        z-index: 1023;
+    }
+    #payzone-payment-modal, #payzone-loading-modal{
+        display: none;
+        height: 80%;
+        width: 80%;
+        max-width: 80% !important;
+        background: rgba(26, 32, 44, .72);
+        opacity: 1;
+        position: fixed;
+        padding: 1.25rem;
+        top: 0;
+        left: 0;
+        transition: opacity 0.5s;
+        z-index: 1072;
+        .payzone-loading-wrap{
+            height: 100%;
+            width: 100%;
+            max-width: 100% !important;
+            img{
+                width: 100%;
+                max-width: 100%!important;
+            }
+        }
+        #payzone-modal-close{
+            color: white;
+            background: $theme-color;
+            height: 2.5rem;
+            width: 2.5rem;
+            font-size: 1.25rem;
+            font-weight: bold;
+            padding: .25rem;
+            position: absolute;
+            text-align: center;
+            border-radius: 50%;
+            &:hover{
+                background: $theme-color;
+                transform: scale(1.2);
+            }
+        }
+        iframe{
+            height: 100%;
+            width: 100%;
+            max-width: 100% !important;
+            transition: all 0.5s;
+            .ImageLeft{
+                width: 100%;
+                img{
+                    width: 100%;
+                    max-width: 100%!important;
+                }
+            }
+            .ImageRight{
+                width: 100%;
+                img{
+                    width: 100%;
+                    max-width: 100%!important;
+                }
+            }
+            #ACSMainContent{
+                padding: .25rem .5rem;
+                font-family: $font-family!important;
+            }
+        }
+    }
+    .payzone-transaction-results{
+
+    }
+}
+
+.shadow {
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .1), 0 1px 2px 0 rgba(0, 0, 0, .06)
+}
+
+.text-center {
+    text-align: center
+}
+
+.text-gray-200 {
+    --text-opacity: 1;
+    color: #edf2f7;
+    color: rgba(237, 242, 247, var(--text-opacity))
+}
+
+.text-gray-300 {
+    --text-opacity: 1;
+    color: #e2e8f0;
+    color: rgba(226, 232, 240, var(--text-opacity))
+}
+
+.text-gray-400 {
+    --text-opacity: 1;
+    color: #cbd5e0;
+    color: rgba(203, 213, 224, var(--text-opacity))
+}
+
+.text-gray-500 {
+    --text-opacity: 1;
+    color: #a0aec0;
+    color: rgba(160, 174, 192, var(--text-opacity))
+}
+
+.text-gray-600 {
+    --text-opacity: 1;
+    color: #718096;
+    color: rgba(113, 128, 150, var(--text-opacity))
+}
+
+.text-gray-700 {
+    --text-opacity: 1;
+    color: #4a5568;
+    color: rgba(74, 85, 104, var(--text-opacity))
+}
+
+.text-gray-900 {
+    --text-opacity: 1;
+    color: #1a202c;
+    color: rgba(26, 32, 44, var(--text-opacity))
+}
+
+.underline {
+    text-decoration: underline
+}
+
+.antialiased {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale
+}
+
+.w-5 {
+    width: 1.25rem
+}
+
+.w-8 {
+    width: 2rem
+}
+
+.w-auto {
+    width: auto
+}
+
+.grid-cols-1 {
+    grid-template-columns:repeat(1, minmax(0, 1fr))
+}

@@ -1,12 +1,15 @@
-<div id='payzone-payment-modal-background'></div>
-<div id='payzone-payment-modal'>
-    <a id='payzone-modal-close' href='#'>&times;</a>
+<div id='payzone-payment-modal-background'>
+    <div id='payzone-payment-modal'>
+        <a id='payzone-modal-close' href='#'>&times;</a>
+    </div>
 </div>
 
-<div id='payzone-loading-modal-background'></div>
-<div id='payzone-loading-modal'>
-    <div class='payzone-loading-wrap' id='payzone-loading-wrap'>
-        <img src='{{ asset("assets/images/loading.gif") }}' alt="Loading...."/>
+
+<div id='payzone-loading-modal-background'>
+    <div id='payzone-loading-modal'>
+        <div class='payzone-loading-wrap' id='payzone-loading-wrap'>
+            <img src='{{ asset("assets/images/loading.gif") }}' alt="Loading...."/>
+        </div>
     </div>
 </div>
 <script>

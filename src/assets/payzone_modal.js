@@ -39,9 +39,9 @@ function openPayzoneModal(size) {
 
 function sizePayzoneModal(size) {
     if (size === 'threed') {
-        pzgModal.style.width = "370px";
-        pzgModal.style.height = "360px";
-        pzgModal.style.margin = "calc( 50vh - 180px ) calc( 50vw - 190px )";
+        pzgModal.style.width = "410px";
+        pzgModal.style.height = "440px";
+        pzgModal.style.margin = "calc( 50vh - 220px ) calc( 50vw - 210px )";
     } else if (size === 'loading') {
         pzgModal.style.width = "200px";
         pzgModal.style.height = "200px";

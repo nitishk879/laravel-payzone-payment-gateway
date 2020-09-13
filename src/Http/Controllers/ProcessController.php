@@ -139,12 +139,12 @@ class ProcessController extends Controller
     public function result(Request $request){
         $ThreeDSecure=false;
         $ThreeDSecureResponse=false;
-        $paymentGateway = $this->payzoneGateway;
+        $payzoneGateway = $this->payzoneGateway;
 
         if ($request->input("CrossReference") && !$request->input("PaREQ") || $request->input("CrossReference") || $request->input('StatusCode')==30){
             $validate = $this->payzoneGateway->validateResponse($_GET, $_POST);
             if (isset($validate["Notification"])) {
-                $showresults=true;
+                $showResults=true;
                 switch ($validate["Notification"]["Type"]) { //
                     case PAYZONE_RESPONSE_OUTCOMES::SUCCESS: // Payment successful
                         $iframesrc='results';
@@ -157,7 +157,7 @@ class ProcessController extends Controller
                     case PAYZONE_RESPONSE_OUTCOMES::THREED:
                         $iframesrc='results-threed';
                         //3D Secure Authentication required - don't display results yet but pass over to 3D secure handler
-                        $showresults=false;
+                        $showResults=false;
                         break;
                     case PAYZONE_RESPONSE_OUTCOMES::UNKNOWN:
                     default:
@@ -165,13 +165,13 @@ class ProcessController extends Controller
                         # code...
                         break;
                 }
-                view('payzone::response', compact( 'showresults', 'validate', 'paymentGateway'));
+                view('payzone::components.response', compact( 'showResults', 'validate', 'payzoneGateway'));
             }
         }
         if ($this->payzoneGateway->getIntegrationType() == INTEGRATION_TYPE::TRANSPARENT ){
             if(isset($_POST["PaREQ"]) && isset($_POST["CrossReference"])){
                 $validate3D = $this->payzoneGateway->validateResponse3DTransparent($_POST);
-                $showresults=true;
+                $showResults=true;
                 $validate["Notification"]["Type"]= PAYZONE_RESPONSE_OUTCOMES::THREED;
                 $validate["Notification"]["Title"]="3D Secure";
                 $validate["Notification"]["Message"]="3D Secure Authentication Required";
@@ -181,7 +181,7 @@ class ProcessController extends Controller
                     $ThreeDSecure=true;
                 }
 
-                view('payzone::response.', compact( 'showresults', 'validate', 'paymentGateway'));
+                view('payzone::components.response.', compact( 'showResults', 'validate', 'payzoneGateway'));
 
             }
             else if (isset($_POST["PaRes"])){
@@ -191,6 +191,6 @@ class ProcessController extends Controller
             }
         }
 
-        return view('payzone::success', compact( 'showresults', 'validate', 'paymentGateway'));
+        return view('payzone::success', compact( 'showResults', 'validate', 'payzoneGateway'));
     }
 }

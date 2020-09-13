@@ -128,7 +128,9 @@ form.payzone-form>div.payzone-form-section label {
   display: block;
 }
 
-form.payzone-form>div.payzone-form-section input[type="text"], form.payzone-form>div.payzone-form-section input[type="tel"], form.payzone-form>div.payzone-form-section input[type="number"], form.payzone-form>div.payzone-form-section input[type="submit"], form.payzone-form>div.payzone-form-section select,form.payzone-form>div.payzone-form-section textarea {
+form.payzone-form>div.payzone-form-section input[type="text"], form.payzone-form>div.payzone-form-section input[type="tel"],
+form.payzone-form>div.payzone-form-section input[type="number"], form.payzone-form>div.payzone-form-section input[type="submit"],
+form.payzone-form>div.payzone-form-section select,form.payzone-form>div.payzone-form-section textarea {
   display: block;
   width: calc( 100% - 10px - 10px);
   font-size: 12px;
@@ -311,7 +313,7 @@ span.cvv-wrap:hover::after {
   position: absolute;
   left: 3px;
   top: 1px;
-  color: #ccc;
+  color: deepskyblue;
   pointer-events: none;
   z-index: -1;
 }

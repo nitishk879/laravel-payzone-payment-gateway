@@ -5,25 +5,31 @@
 @section('onload', "payzonePaymentPageLoad();")
 
 @section('content')
-    <form class='payzone-form' id='payzone-payment-form' name='payzone-payment-form' target="_self" method="POST"  action="/callback-url" >
-        @csrf
-        @if($integrationType)
-            @include("payzone::components.card-details")
-            <span id='form_errors'></span>
-            <div class='payzone-form-section'>
-                <input id='payzone-direct' type="hidden" name="payzone-direct" value="submitted" />
-                <input id='payzone-cart-submit' type="submit" name="Submit" value="Submit" />
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6 col-lg-4">
+                <form class='payzone-form' id='payzone-payment-form' name='payzone-payment-form' target="_self" method="POST"  action="/callback-url" >
+                    @csrf
+                    @if($integrationType)
+                        @include("payzone::components.card-details")
+                        <span id='form_errors'></span>
+                        <div class='payzone-form-section'>
+                            <input id='payzone-direct' type="hidden" name="payzone-direct" value="submitted" />
+                            <input id='payzone-cart-submit' type="submit" name="Submit" value="Submit" />
+                        </div>
+                        <div class="form-group">
+                            <div class='payzone-form-section'>
+                                <a href="https://www.payzone.co.uk/" target="_blank">
+                                    <img class='img-fluid payzone-footer-image' src="{{ asset("/assets/images/payzone_cards_accepted.png") }}" alt="card Accepted" />
+                                </a>
+                            </div>
+                        </div>
+                    @endif
+                    @php echo $formBuilder @endphp
+                </form>
             </div>
-            <div class="form-group">
-                <div class='payzone-form-section'>
-                    <a href="https://www.payzone.co.uk/" target="_blank">
-                        <img class='img-fluid payzone-footer-image' src="{{ asset("assets/images/payzone_cards_accepted.png") }}" alt="card Accepted" />
-                    </a>
-                </div>
-            </div>
-        @endif
-        @php echo $formBuilder @endphp
-    </form>
+        </div>
+    </div>
 @endsection
 
 @section('model')
@@ -32,8 +38,8 @@
 
 @section('scripts')
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="{{ asset("assets/inputmasking.js") }}" data-autoinit="true"></script>
-    <script src="{{ asset("assets/payzone_validate.js") }}" data-autoinit="true"></script>
+    <script src="{{ asset("/assets/inputmasking.js") }}" data-autoinit="true"></script>
+    <script src="{{ asset("/assets/payzone_validate.js") }}" data-autoinit="true"></script>
     <script>
         PayzonePaymentForm = document.getElementById('payzone-payment-form');
         function payzonePaymentPageLoad(){

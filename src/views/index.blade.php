@@ -72,7 +72,7 @@
                     @csrf
                     <div class='form-group payzone-form-section'>
                         <a href='https://www.payzone.co.uk/' target="_blank">
-                            <img class='img-fluid' src="{{ asset("assets/images/payzone_logo.png") }}" alt="Payzone Payment Gateway"/>
+                            <img class='img-fluid' src="{{ asset("/assets/images/payzone_logo.png") }}" alt="Payzone Payment Gateway"/>
                         </a>
                     </div>
                     <p>To view the sample payment flow, with no with post data being sent across (i.e. blank payment / new customer) please click the below button</p>

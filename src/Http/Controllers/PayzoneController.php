@@ -103,14 +103,4 @@ class PayzoneController extends Controller
         return view('payzone::payment', compact('integrationType', 'formBuilder'));
     }
 
-    public function endSession(Request $request)
-    {
-        if ($request->session()->has('checkout')) {
-            $request->session()->forget('checkout');
-            $request->session()->flush();
-        }
-
-        return redirect('/payzone')->with('success', "Session ended");
-    }
-
 }

@@ -8,19 +8,12 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- Bootstrap CSS -->
     <!--Payzone CSS -->
-    <link rel="stylesheet" href="{{ asset("css/app.css") }}">
-    <link rel="stylesheet" href="{{ asset("assets/payzone_gateway.css") }}">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ asset("/assets/style.css") }}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <title>@yield('title') || Payzone</title>
     <!--[if lt IE 9]>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
     <![endif]-->
-    <style type="text/css">
-        .img-fluid {
-            width: 100%;
-            max-width: 100% !important;
-        }
-    </style>
 </head>
 <body onload="@yield('onload')">
 @yield('content')

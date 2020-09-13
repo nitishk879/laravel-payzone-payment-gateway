@@ -16,7 +16,7 @@ class PayZoneServiceProvider extends ServiceProvider
         ]);
 
         $this->publishes([
-            __DIR__.'/assets' => public_path('vendor/payzone'),
+            __DIR__.'/assets' => public_path('assets'),
         ], 'public');
 
     }
