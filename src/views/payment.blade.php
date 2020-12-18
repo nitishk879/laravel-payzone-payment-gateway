@@ -8,7 +8,7 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-6 col-lg-4">
-                <form class='payzone-form' id='payzone-payment-form' name='payzone-payment-form' target="_self" method="POST"  action="/callback-url" >
+                <form class='payzone-form' id='payzone-payment-form' name='payzone-payment-form' target="_self" method="POST"  action="/payment-success" >
                     @csrf
                     @if($integrationType)
                         @include("payzone::components.card-details")

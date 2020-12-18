@@ -1,15 +1,20 @@
 <?php
-namespace Payzone\DBControl;
 
-if (count(get_included_files()) == 1) exit("Direct access not permitted.");
+
+namespace Svodya\PayZone\includes\helpers;
+
 
 class DBDemo
 {
     //Declare variables and constants for DB access
+//    const hostname = config('database.connections.mysql.host') ?? env('DB_HOST');
+//    const username = config('database.connections.mysql.username');
+//    const password = config('database.connections.mysql.password');
+//    const database = config('database.connections.mysql.database');
     const hostname = 'localhost';
     const username = 'root';
     const password = 'ashy';
-    const database = 'botmat';
+    const database = 'bomat';
     //set a default response incase of error
     public $response = "An error has occurred";
 
@@ -40,22 +45,6 @@ class DBDemo
         }
     }
 
-    /**
-     * [saveTransaction Saves transaction log details to the DB]
-     * @method saveTransaction
-     * @param  [String]            $order_id
-     * @param  [String]            $amounttidy
-     * @param  [Int]               $amountminor
-     * @param  [Float]             $amountmajor
-     * @param  [Int]               $currency_code
-     * @param  [String]            $crossreference
-     * @param  [String]            $statuscode
-     * @param  [String]            $type
-     * @param  [String]            $transactiondatetime
-     * @param  [String]            $message
-     * @param  [String]            $integration
-     * @return [Boolean]           [complete or failed]
-     */
     public static function saveTransaction($order_id, $amounttidy, $amountminor, $amountmajor, $currency, $cross_reference, $status_code, $status, $transaction_datetime, $gateway_message, $integration)
     {
 
@@ -105,8 +94,4 @@ class DBDemo
 
         return $config;
     }
-
-
 }
-
-?>

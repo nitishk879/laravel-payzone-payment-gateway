@@ -155,7 +155,7 @@ var inputMask = {
             newValue += placeholder[i];
         }
         // break if no characters left and the pattern is non-special character
-        if (strippedValue[j] == undefined) {
+        if (strippedValue[j] === undefined) {
           break;
         }
     }
@@ -172,7 +172,7 @@ var inputMask = {
         l = value.length, testValue = '';
 
     //convert to months
-    if (l == 1 && placeholder.toUpperCase().substr(0,2) == 'MM') {
+    if (l === 1 && placeholder.toUpperCase().substr(0,2) == 'MM') {
       if(value > 1 && value < 10) {
         value = '0' + value;
       }

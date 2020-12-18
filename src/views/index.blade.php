@@ -84,10 +84,10 @@
 </div>
 @endsection
 @section('scripts')
-    <script>
-        function submitForms()
-        {
-            withDataForm.submit()
-        }
-    </script>
+{{--    <script>--}}
+{{--        function submitForms()--}}
+{{--        {--}}
+{{--            withDataForm.submit()--}}
+{{--        }--}}
+{{--    </script>--}}
 @endsection

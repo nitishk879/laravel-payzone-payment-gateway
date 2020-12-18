@@ -4,11 +4,13 @@ namespace Svodya\PayZone;
 
 include_once(__DIR__ . "/includes/gateway/constants.php");
 include_once(__DIR__ . "/includes/helpers/payzone_helper.php");
+include_once(__DIR__ . "/includes/helpers/DBDemo.php");
 
 use Payzone\Constants as Constants;
 use Payzone\Helper as Helper;
+use Svodya\PayZone\includes\helpers\DBDemo;
 
-$PayzoneHelper = new Helper\PayzoneHelper;
+$PayzoneHelper  = new Helper\PayzoneHelper;
 $PayzoneGateway = new PayzoneGateway;
 
 
@@ -73,7 +75,7 @@ class PayzoneGateway
         self::setURL('payment-page', config('payzone.payment-page') ?? 'payment');  #Payment page, handles the logic of the payment type,   # and redirects to the relevant payment processing function
         self::setURL('process-payment', config('payzone.process-payment') ?? 'payment-process'); #processes the payment as required
         self::setURL('process-refund', config('payzone.process-refund') ?? 'process-refund'); #processes the payment as required
-        self::setURL('result-page', config('payzone.result-page') ?? 'callback-url'); # validates and presents the results
+        self::setURL('result-page', config('payzone.result-page') ?? 'payment-success'); # validates and presents the results
         self::setURL('loading-page', config('payzone.loading-page') ?? 'assets/loading.html'); # Loading page
         self::setURL('form-action-payment');# no variable needed, for hosted this sets the page to the hosted form payment handler (MMS) and for other integrations it changes the the form action to self so the content will be posted back to the same page
         self::setURL('response-form-handler');# no variable needed, this accesses the form handler in the MMS
@@ -293,12 +295,6 @@ class PayzoneGateway
 
     public function setURL($act, $val = null)
     {
-        ##### DEVELOPER NOTE #####
-        #~~~~~~~~~~~~~~~~~~~~~~~~~~#
-        # If you change the overall file structure of the payment module then you will need to amend the below functions to return the correct URLs as required. If you are nesting or including the content it may also be required to change the
-        # Helper\PayzoneHelper::getSiteSecureURL() function.
-        #~~~~~~~~~~~~~~~~~~~~~~~~~~#
-        ############################
         switch ($act) {
             case 'home-page':
                 $this->home_page = Helper\PayzoneHelper::getSiteSecureURL('base') . $val;
@@ -594,7 +590,10 @@ class PayzoneGateway
 
     public function buildXHRequest()
     {
-        if (!isset($_POST["OrderID"])) {//Validate information that has been passed across (via $_POST or $_GET) and process the information ready for the next stage of the payment process, including setting all of the variables for the payment handling with the system
+        if (!isset($_POST["OrderID"])) {
+            //Validate information that has been passed across (via $_POST or $_GET) and
+            // process the information ready for the next stage of the payment process,
+            // including setting all of the variables for the payment handling with the system
         }
         $params = array();
         $Country = (isset($_POST["Country"])) ? $_POST["Country"] : false;
@@ -670,39 +669,14 @@ class PayzoneGateway
         return ($params); //pass the array over to the form generator to return
     }
 
-    /* ############################################## */
-    /* Response validation and  Handling */
-    /* ############################################## */
-    /**
-     * [recordTransaction description]
-     * @method recordTransaction
-     * @param  [String]            $order_id
-     * @param  [String]            $amounttidy
-     * @param  [Int]               $amountminor
-     * @param  [Float]             $amountmajor
-     * @param  [Int]               $currency_code
-     * @param  [String]            $crossreference
-     * @param  [String]            $statuscode
-     * @param  [String]            $type
-     * @param  [String]            $transactiondatetime
-     * @param  [String]            $message
-     * @return [Boolean]           [complete or failed]
-     */
     public function recordTransaction($order_id, $amounttidy, $amountminor, $amountmajor, $currency_code, $crossreference, $statuscode, $type, $transactiondatetime, $message)
     {
-        ##### DEVELOPER NOTE #####
-        #~~~~~~~~~~~~~~~~~~~~~~~~~~#
-        # This section is called from the transaction complete functions and is a location for you to include any transaction logging / recording or other funcationality.
-        # A demo version is included for reference and needs to be uncommented to test if required. Futher details are included in the __construct function comments
-        # A warning message will be presented to all users whilst a transaction is not being recorded, to suppress this message change $recordTransaction to true;
-        # WHen creating your own funtion to record the transaction, ensure that the function returns true if the record has been saved, and false on any error.
-        #~~~~~~~~~~~~~~~~~~~~~~~~~~#
-        ############################
 
         $recordTransaction = false;
-        //$recordTransaction = DB\DBDemo::saveTransaction($order_id, $amounttidy, $amountminor, $amountmajor, $currency_code, $crossreference, $statuscode, $type, $transactiondatetime, $message, $this->getIntegrationType2());#DBExample
+//        $recordTransaction = DatabaseHelper::saveTransaction($order_id, $amounttidy, $amountminor, $amountmajor, $currency_code, $crossreference, $statuscode, $type, $transactiondatetime, $message, $this->getIntegrationType2());
+        $recordTransaction = DBDemo::saveTransaction($order_id, $amounttidy, $amountminor, $amountmajor, $currency_code, $crossreference, $statuscode, $type, $transactiondatetime, $message, $this->getIntegrationType2());#DBExample
         if ($recordTransaction) {
-            //Transaction recorded correctly
+            echo "Transaction saved successfully";
         } else {
             $transMessage = "" .
                 "<div class='payzone-transaction-results payzone-warning'>" .
@@ -711,7 +685,8 @@ class PayzoneGateway
                 '<p>DEVELOPER NOTE - when integrating if not saving this to custom DB, set the $recordTransaction variable to true to override the save check.</p>' .
                 "</div>" .
                 "</div>";
-            echo($transMessage);//Action to complete if transaction has been not been recorded correctly or the record transaction recorded an error recorded...
+            echo($transMessage);
+            //Action to complete if transaction has been not been recorded correctly or the record transaction recorded an error recorded...
         };
     }
 

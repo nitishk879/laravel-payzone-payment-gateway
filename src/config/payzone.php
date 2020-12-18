@@ -13,7 +13,7 @@ return [
     'payment-page'      => 'payment',
     'process-payment'   => 'payment-process',
     'process-refund'    => 'refund',
-    'result-page'       => 'callback-url',
+    'result-page'       => 'payment-success',
     'loading-page'      => 'assets/loading.html',
     'form-action-payment'      => '',
     'response-form-handler'    => ''

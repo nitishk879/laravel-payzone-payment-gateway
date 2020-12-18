@@ -42,25 +42,13 @@ class PayzoneController extends Controller
         $payzoneGateway = $this->payZoneGateway;
         $integrationType = $this->payZoneGateway->getIntegrationType() == integrationType::DIRECT;
         if ($request->has('OrderID')) {
-            $session = array(
-                "FullAmount" => $request->input("FullAmount"),
-                "Amount" => (($request->input("FullAmount") * 100) / 100),
-                "OrderID" => $request->input("OrderID"),
-                "TransactionDateTime" => $request->input("TransactionDateTime"),
-                "OrderDescription" => $request->input("OrderDescription"),
-                "CustomerName" => $request->input("CustomerName") ?? '',
-                "Address1" => $request->input("Address1") ?? '',
-                "Address2" => $request->input("Address2") ?? '',
-                "City" => $request->input("City") ?? '',
-                "State" => $request->input("State") ?? '',
-                "PostCode" => $request->input("PostCode") ?? '',
-                "Country"   => $request->input('Country') ?? ''
-            );
-            if (!$request->session()->has('checkout')) {
-                $request->session()->put('checkout', $session);
+            if(!$request->session()->has('checkout')){
+                $this->setter($request, $session=null);
             }
-
             $country    = $request->Country ?? '826';
+        }else{
+            $country = 826;
+            $session = '';
         }
 
         return view('payzone::cart', compact('payzoneGateway', 'integrationType', 'country', 'session'));
@@ -74,26 +62,10 @@ class PayzoneController extends Controller
                 redirect()->back()->with("danger", "Sorry! Something went wrong");
             }
 
-            $orderStatus = $request->session()->get('checkout')[0] ?? $request->session()->get('checkout');
+            $checkoutSession    = $request->session()->get('checkout')[0] ?? $request->session()->get('checkout');
 
-            $customer = array(
-                "FullAmount" => $orderStatus["FullAmount"],
-                "Amount" => $orderStatus["Amount"] ?? ($orderStatus["FullAmount"] * 100) / 100,
-                "OrderID" => $orderStatus["OrderID"],
-                "TransactionDateTime" => $orderStatus["TransactionDateTime"],
-                "OrderDescription" => $orderStatus["OrderDescription"],
-                "direct_submit" => $request->input('direct_submit'),
-                "CustomerName" => $request->input('CustomerName'),
-                "Address1" => $request->input('Address1'),
-                "Address2" => $request->input('Address2'),
-                "City" => $request->input('City'),
-                "State" => $request->input('State'),
-                "EmailAddress" => $request->input('EmailAddress'),
-                "PostCode" => $request->input('PostCode'),
-                "Country" => $request->input('Country'),
-            );
+            $this->setter($request, $checkoutSession);
 
-            $request->session()->put('checkout', $customer);
         } else {
             return redirect()->back()->with('danger', 'Sorry! It seems you\'ve manipulated payment gateway');
         }
@@ -101,6 +73,27 @@ class PayzoneController extends Controller
         $formBuilder = $this->payZoneGateway->buildFormRequest();
 
         return view('payzone::payment', compact('integrationType', 'formBuilder'));
+    }
+
+    private function setter($request, $session){
+        $customer = array(
+            "FullAmount" => $session["FullAmount"] ?? $request->input('FullAmount'),
+            "Amount" => $session["Amount"] ?? ($session["FullAmount"] ?? $request->input('FullAmount') * 100) / 100,
+            "OrderID" => $session["OrderID"] ?? $request->input('OrderID'),
+            "TransactionDateTime" => $session["TransactionDateTime"] ?? $request->input("TransactionDateTime"),
+            "OrderDescription" => $session["OrderDescription"] ?? $request->input("OrderDescription"),
+            "direct_submit" => $request->input('direct_submit'),
+            "CustomerName" => $request->input('CustomerName'),
+            "Address1" => $request->input('Address1'),
+            "Address2" => $request->input('Address2'),
+            "City" => $request->input('City'),
+            "State" => $request->input('State'),
+            "EmailAddress" => $request->input('EmailAddress'),
+            "PostCode" => $request->input('PostCode'),
+            "Country" => $request->input('Country'),
+        );
+
+        return $request->session()->put('checkout', $customer);
     }
 
 }

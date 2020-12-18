@@ -16,7 +16,9 @@
                             <p class='payzone-results-details'>Previous Response: {{ $validate["Response"]["PreviousResponse"]["PreviousMessage"] }}</p>
                         @else
                             <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                <strong>{{ $validate["Notification"]["Title"] }}!</strong> {{ $validate["Notification"]["Message"] }} <br/> {{ $validate["Response"]["Message"] }}
+                                <strong>{{ $validate["Notification"]["Title"] }}!</strong> {{ $validate["Notification"]["Message"] }}
+                                <br/>
+                                {{ $validate["Response"]["Message"] }}
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>

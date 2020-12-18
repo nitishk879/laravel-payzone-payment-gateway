@@ -5,7 +5,9 @@ namespace Svodya\PayZone\Http\Controllers;
 
 require_once (__DIR__."/../../includes/gateway/paymentsystem.php");
 
+use App\Customer;
 use App\Http\Controllers\Controller;
+use App\Order;
 use Illuminate\Http\Request;
 use Payzone\Constants\INTEGRATION_TYPE;
 use Payzone\Constants\PAYZONE_RESPONSE_OUTCOMES;
@@ -41,6 +43,7 @@ class ProcessController extends Controller
             if($IntegrationType==INTEGRATION_TYPE::DIRECT){
                 $this->directPayment($request, $HashMethod, $SecretKey);
             }
+
         }
 
     }
@@ -192,5 +195,29 @@ class ProcessController extends Controller
         }
 
         return view('payzone::success', compact( 'showResults', 'validate', 'payzoneGateway'));
+    }
+
+    private function customer($data){
+        Customer::create([
+            'name'  => $data['CardName'],
+            'email' => $data['EmailAddress'],
+//            'phone' => $data['EmailAddress'],
+            'address1' => $data['Address1'],
+            'address2' => $data['Address2'],
+            'city' => $data['City'],
+            'state' => $data['State'],
+            'postal' => $data['PostCode'],
+            'country' => $data['PostCode'],
+        ]);
+    }
+
+    private function order($data){
+        Order::create([
+            'total_amount'  => $data['FullAmount'],
+            'order_id'      => $data['OrderID'],
+            'order_desc'    => $data['OrderDescription'],
+            'order_status'  => 1,
+            'customer_id' => 1
+        ]);
     }
 }
