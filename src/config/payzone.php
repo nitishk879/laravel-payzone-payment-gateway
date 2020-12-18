@@ -1,9 +1,9 @@
 <?php
 
 return [
-    'payzone_merchant_id'       => env('PAYZONE_MERCHANT_ID' ?? 'Cellcr-2813986'),
-    'payzone_merchant_pass'     => env('PAYZONE_MERCHANT_PASS' ?? 'Cellcrazyy1234'),
-    'payzone_pre_shared_key'    => env('PAYZONE_PRE_SHARED_KEY' ?? 'E4aIg6C6dWwrTiuqBVFjV20MQE7Ck'),
+    'payzone_merchant_id'       => env('PAYZONE_MERCHANT_ID' ?? 'something-1234567'),
+    'payzone_merchant_pass'     => env('PAYZONE_MERCHANT_PASS' ?? 'pass123e4'),
+    'payzone_pre_shared_key'    => env('PAYZONE_PRE_SHARED_KEY' ?? 'aladskjfj8732jakf'),
     'payzone_currency'          => env('PAYZONE_CURRENCY_CODE' ?? 'GBP'),
     'payzone_currency_code'     => 826,
 
