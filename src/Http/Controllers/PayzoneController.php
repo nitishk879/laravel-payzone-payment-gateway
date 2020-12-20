@@ -19,41 +19,6 @@ class PayzoneController extends Controller
         $this->payZoneHelper = $payZoneHelper;
     }
 
-    public function index()
-    {
-        $session = array(
-            'amount' => 25,
-            'order_id' => 12334,
-            'order_desc' => "Hey this is my custom order.",
-            'customer_name' => 'Geoff Wayne',
-            'address_line1' => '113 Glendower Road',
-            "address_line2" => '',
-            "city" => 'Birmingham',
-            "state" => 'West Midlands',
-            "postal_code" => 'B42 1SX',
-            "country" => array('India', 'United Kingdom', 'America'),
-        );
-
-        return view('payzone::index', compact( 'session'));
-    }
-
-    public function cart(Request $request)
-    {
-        $payzoneGateway = $this->payZoneGateway;
-        $integrationType = $this->payZoneGateway->getIntegrationType() == integrationType::DIRECT;
-        if ($request->has('OrderID')) {
-            if(!$request->session()->has('checkout')){
-                $this->setter($request, $session=null);
-            }
-            $country    = $request->Country ?? '826';
-        }else{
-            $country = 826;
-            $session = '';
-        }
-
-        return view('payzone::cart', compact('payzoneGateway', 'integrationType', 'country', 'session'));
-    }
-
     public function payment(Request $request)
     {
         $integrationType = $this->payZoneGateway->getIntegrationType() == integrationType::DIRECT;
@@ -67,7 +32,7 @@ class PayzoneController extends Controller
             $this->setter($request, $checkoutSession);
 
         } else {
-            return redirect()->back()->with('danger', 'Sorry! It seems you\'ve manipulated payment gateway');
+            return redirect()->back()->with('danger', 'Sorry! It seems you\'ve manipulated payment gateway. We are unable to find direct Submit method.');
         }
 
         $formBuilder = $this->payZoneGateway->buildFormRequest();

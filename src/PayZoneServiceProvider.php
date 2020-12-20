@@ -22,14 +22,11 @@ class PayZoneServiceProvider extends ServiceProvider
                 ], 'migrations');
             }
             $this->publishes([
-                __DIR__.'/../config/payzone.php' => config_path('payzone.php'),
-            ]);
+                __DIR__.'/config/payzone.php' => config_path('payzone.php'),
+            ], 'config');
             $this->publishes([
                 __DIR__.'/assets' => public_path('assets'),
             ], 'public');
-            $this->publishes([
-                __DIR__.'/../database/migrations/' => database_path('migrations')
-            ], 'migrations');
 
         }
 

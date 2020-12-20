@@ -6,6 +6,7 @@ include_once(__DIR__ . "/includes/gateway/constants.php");
 include_once(__DIR__ . "/includes/helpers/payzone_helper.php");
 include_once(__DIR__ . "/includes/helpers/DBDemo.php");
 
+use Illuminate\Support\Facades\Session;
 use Payzone\Constants as Constants;
 use Payzone\Helper as Helper;
 use Svodya\PayZone\includes\helpers\DBDemo;
@@ -55,9 +56,9 @@ class PayzoneGateway
 
         self::setDebugMode(false);
         // Set the variables using a static method
-        self::setMerchantId(config('payzone.payzone_merchant_id') ?? 'Cellcr-2813986');// Enter the merchant ID from the MMS
-        self::setMerchantPassword(config('payzone.payzone_merchant_pass') ?? 'Cellcrazyy1234');// Enter the merchant Password from the MMS
-        self::setPreSharedKey(config('payzone.payzone_pre_shared_key') ?? 'E4aIg6C6dWwrTiuqBVFjV20MQE7Ck');// Enter the pre shared key from the MMS
+        self::setMerchantId(config('payzone.payzone_merchant_id') ?? env('PAYZONE_MERCHANT_ID'));// Enter the merchant ID from the MMS
+        self::setMerchantPassword(config('payzone.payzone_merchant_pass') ?? env('PAYZONE_MERCHANT_PASS'));// Enter the merchant Password from the MMS
+        self::setPreSharedKey(config('payzone.payzone_pre_shared_key') ?? env('PAYZONE_PRE_SHARED_KEY'));// Enter the pre shared key from the MMS
         self::setSecretKey('');// secret key used to protect and verify data
         self::setIntegrationType(Constants\INTEGRATION_TYPE::DIRECT);
         self::setHashMethod(Constants\HASH_METHOD::SHA1);
@@ -232,67 +233,6 @@ class PayzoneGateway
         return $this->order_details;
     }
 
-    public function versionCheck()
-    {
-        $plugin_version = $this->plugin_version;
-        $url = "https://payzone-modules.co.uk/api/api.php?action=version_check&module=custom-module-direct&version=$plugin_version&key=8U2egXStxFiNA1YnFrfu9MN1DU1x1YO5P3qT3exC";
-        $options = array(
-            CURLOPT_RETURNTRANSFER => true,   // return web page
-            CURLOPT_HEADER => false,  // don't return headers
-            CURLOPT_FOLLOWLOCATION => true,   // follow redirects
-            CURLOPT_MAXREDIRS => 10,     // stop after 10 redirects
-            CURLOPT_ENCODING => "",     // handle compressed
-            CURLOPT_USERAGENT => "Payzone Gateway", // name of client
-            CURLOPT_AUTOREFERER => true,   // set referrer on redirect
-            CURLOPT_CONNECTTIMEOUT => 120,    // time-out on connect
-            CURLOPT_TIMEOUT => 120,    // time-out on response
-        );
-        $ch = curl_init($url);
-        curl_setopt_array($ch, $options);
-        $content = curl_exec($ch);
-        curl_close($ch);
-
-
-        $jsonresp = json_decode($content);
-        $responsemsg = '<h2 style="margin:5px 0;">Payzone Payment Gateway</h2><p>' . $jsonresp->response . "- Latest version v" . $jsonresp->latest_version . " | Installed version v" . $plugin_version . "</p>";
-        $responsemsg2 = '<p>Please get in touch at <a href="mailto:online@payzone.co.uk">online@payzone.co.uk</a> to receive the latest module</p>';
-        switch ($jsonresp->code) {
-            case '4'://latest version
-            case '10'://repeat check
-                $responsemsg = '<h2 style="margin:5px 0;">Payzone Payment Gateway</h2><p>Latest version v' . $jsonresp->latest_version . "</p>";
-                $class = 'payzone-version-info';
-                $showmsg = false;
-                break;
-            case '0'://repeat check
-            case '3'://patch available
-            case '2'://minor patch available
-                $class = 'payzone-version-warning';
-                $showmsg = true;
-                $responsemsg .= $responsemsg2;
-
-                if ($jsonresp->latest_version == $plugin_version) {
-                    $showmsg = false;
-                }
-                break;
-            case '1'://major update available
-                $responsemsg .= $responsemsg2;
-                $class = 'payzone-version-error';
-                $showmsg = true;
-                break;
-            default: // unknown version
-                $class = 'payzone-version-error';
-                $responsemsg = 'Unknown Version Installed.<br>';
-                $responsemsg .= $responsemsg2;
-                $showmsg = true;
-                break;
-        }
-        $return = '';
-        if ($showmsg) {
-            $return = "<div class='payzone-alert $class'>$responsemsg</div>";;
-        }
-        return $return;
-    }
-
     public function setURL($act, $val = null)
     {
         switch ($act) {
@@ -369,42 +309,36 @@ class PayzoneGateway
                 break;
         }
     }
-
-    /**
-     * [buildFormRequest parse and process response fields and format into array to be passed ot the form generation field]
-     * @method buildFormRequest
-     * @param  [Array]           [$_POST objects are posted to form page]
-     * @return [String]           [Array passed into Generate Form Function in Return ]
-     */
     public function buildFormRequest()
     {
-
-        if (!isset($_POST["OrderID"])) {
-            // Validate information that has been passed across (via $_POST or $_GET) and process the information ready for the next stage of the payment process, including setting all of the variables for the payment handling with the system
+        if(!Session::has('checkout')){
+            return back()->with("error", "Checkout Session not found");
         }
 
+        $checkout = Session::get('checkout');
+
         $params = array();
-        $Country = (isset($_POST["Country"])) ? $_POST["Country"] : false;
-        $CountryCode = ($Country) ? Helper\PayzoneHelper::getCountryCode($Country) : "";
+        $Country = $checkout["Country"] ? $_POST["Country"] : false;
+        $CountryCode = $Country ? Helper\PayzoneHelper::getCountryCode($Country) : "";
         $ISOCurrencyCode = Helper\PayzoneHelper::getISOCode($this->currency_code);
-        $FullAmount = $_POST["FullAmount"];
+        $FullAmount = $checkout["FullAmount"];
         $Amount = Helper\PayzoneHelper::getMinorCurrencyAmount($ISOCurrencyCode, $FullAmount);
-        $OrderID = $_POST["OrderID"];
-        $TransactionDateTime = $_POST["TransactionDateTime"];
-        $OrderDescription = $_POST["OrderDescription"];
+        $OrderID = $checkout["OrderID"];
+        $TransactionDateTime = $checkout["TransactionDateTime"];
+        $OrderDescription = $checkout["OrderDescription"];
         $EchoThreeDSecureAuthenticationCheckResult = Helper\PayzoneHelper::boolToString(true);
         $EchoCardType = Helper\PayzoneHelper::boolToString(true);
         $EchoAVSCheckResult = Helper\PayzoneHelper::boolToString(true);
         $EchoCV2CheckResult = Helper\PayzoneHelper::boolToString(true);
-        $CustomerName = (isset($_POST["CustomerName"])) ? $_POST["CustomerName"] : "";
-        $Address1 = (isset($_POST["Address1"])) ? $_POST["Address1"] : "";
-        $Address2 = (isset($_POST["Address2"])) ? $_POST["Address2"] : "";
-        $Address3 = (isset($_POST["Address3"])) ? $_POST["Address3"] : "";
-        $Address4 = (isset($_POST["Address4"])) ? $_POST["Address4"] : "";
-        $City = (isset($_POST["City"])) ? $_POST["City"] : "";
-        $State = (isset($_POST["State"])) ? $_POST["State"] : "";
-        $PostCode = (isset($_POST["PostCode"])) ? $_POST["PostCode"] : "";
-        $EmailAddress = (isset($_POST["EmailAddress"])) ? $_POST["EmailAddress"] : "";
+        $CustomerName = $checkout["CustomerName"] ?? $_POST["CustomerName"];
+        $Address1 = $checkout["Address1"] ?? $_POST["Address1"];
+        $Address2 = $checkout["Address2"] ?? $_POST["Address2"] ?? '';
+        $Address3 = $checkout["Address3"] ?? $_POST["Address3"] ?? '';
+        $Address4 = $checkout["Address4"] ?? $_POST["Address4"] ?? '';
+        $City = $checkout["City"] ?? $_POST["City"];
+        $State = $checkout["State"] ?? $_POST["State"];
+        $PostCode = $checkout["PostCode"] ?? $_POST["PostCode"];
+        $EmailAddress = $checkout["EmailAddress"] ?? $_POST["EmailAddress"];
         $CV2Mandatory = Helper\PayzoneHelper::boolToString(true);
         $Address1Mandatory = Helper\PayzoneHelper::boolToString(true);
         $CityMandatory = Helper\PayzoneHelper::boolToString(true);

@@ -10,6 +10,7 @@ Route::namespace('Svodya\PayZone\Http\Controllers')->middleware('web')->group(fu
     Route::get('payzone', 'PayzoneController@index');
     Route::post('cart', 'PayzoneController@cart')->name('payzone.cart');
     Route::get('payment', 'PayzoneController@payment')->name('payzone.action');
+
     Route::post('payment', 'PayzoneController@payment')->name('payzone.pay');
 
     Route::get('payment-process', 'ProcessController@index')->name('payzone.get');  // Not Required if no get request

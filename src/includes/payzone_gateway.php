@@ -62,59 +62,7 @@ class PayzoneGateway
   public function __construct()
   {
 
-    //##### DEVELOPER NOTE #####
-    //#~~~~~~~~~~~~~~~~~~~~~~~~~~#
-    # This Debug function is designed for testing only, using this in a production environment with real data is not recommended.
-    # Debug Mode will stop the forms being generated and submitted in the background and will present the content to the user with a submit button, this mode will potentially expose confidential information if used in a production environment and it is strongly recommended to not use these in production.
-    # Debug mode usings the javascript console.log function to output the POST / GET data for review
-    #~~~~~~~~~~~~~~~~~~~~~~~~~~#
-    ############################
-
     self::setDebugMode(false);
-
-    ##### DEVELOPER NOTE #####
-    #~~~~~~~~~~~~~~~~~~~~~~~~~~#
-    # The below section, when uncommented will enable a demo database recording function to be used for configuration.
-    # Please note you will need to comment out the self::set_____ functions above to ensure that are not duplicated here.
-    # In includes/helpers/dbexample.php you will need to add in your database details, there is a script avaialble in the file to allow to quickly create the demo tables
-    # There are several lines that will need to be uncommented in this file to enable to the DB Example fully, all of the lines are suffixed with #DBExample to enable easy location
-    #~~~~~~~~~~~~~~~~~~~~~~~~~~#
-    ############################
-
-    // DB\DBDemo::saveConfiguration('MerchantID', '**MERCHANTID**');#DBExample
-    // DB\DBDemo::saveConfiguration('MerchantPassword', '**PASSWORD**');#DBExample
-    // DB\DBDemo::saveConfiguration('PreSharedKey', '**PRESHAREDKEY**');#DBExample
-    // DB\DBDemo::saveConfiguration('SecretKey', '**SECRETKEY**');#DBExample
-    // DB\DBDemo::saveConfiguration('IntegrationType', Constants\INTEGRATION_TYPE::DIRECT);#DBExample
-    // DB\DBDemo::saveConfiguration('HashMethod', Constants\HASH_METHOD::SHA1);#DBExample
-    // DB\DBDemo::saveConfiguration('TransactionType', Constants\TRANSACTION_TYPE::SALE);#DBExample
-    // DB\DBDemo::saveConfiguration('CurrencyCode', 'GBP');#DBExample
-    // DB\DBDemo::saveConfiguration('HostedIframe', "true");#DBExample
-    // DB\DBDemo::saveConfiguration('HostedCustomerDetails', "true");#DBExample
-    // DB\DBDemo::saveConfiguration('PayzoneImages', "true");#DBExample
-    // DB\DBDemo::saveConfiguration('OrderDetails', "true");#DBExample
-
-    // Load the variables from the DB example, please note these can be hard coded / static if required, or accessed from a database etc
-    // self::setMerchantId(DB\DBDemo::getConfiguration('MerchantID'));#DBExample
-    // self::setMerchantPassword(DB\DBDemo::getConfiguration('MerchantPassword'));#DBExample
-    // self::setPreSharedKey(DB\DBDemo::getConfiguration('PreSharedKey'));#DBExample
-    // self::setSecretKey(DB\DBDemo::getConfiguration('SecretKey'));#DBExample
-    // self::setIntegrationType(DB\DBDemo::getConfiguration('IntegrationType'));#DBExample
-    // self::setHashMethod(DB\DBDemo::getConfiguration('HashMethod'));#DBExample
-    // self::setTransactionType(DB\DBDemo::getConfiguration('TransactionType'));#DBExample
-    // self::setResultDeliveryMethod(DB\DBDemo::getConfiguration('ResultMethod'));#DBExample
-    // self::setCurrencyCode(DB\DBDemo::getConfiguration('CurrencyCode'));#DBExample
-    // self::setHostedIframe(DB\DBDemo::getConfiguration('HostedIframe'));#DBExample
-    // self::setHostedCustomerDetails(DB\DBDemo::getConfiguration('HostedCustomerDetails'));#DBExample
-    // self::setPayzoneImages(DB\DBDemo::getConfiguration('PayzoneImages'));#DBExample
-    // self::setOrderDetails(DB\DBDemo::getConfiguration('OrderDetails'));#DBExample
-
-    ##### DEVELOPER NOTE #####
-    #~~~~~~~~~~~~~~~~~~~~~~~~~~#
-    # The variables set below in the __construct() function allow configuration of the way the payment gateway operates, these fields can be hardcoded into the __constrcut function as below, or accessed dynamically from a DB etc to set the instance. These fields would be best set in your admin console / functions, stored in a database then retrieved from the below.
-    ############################
-    //
-    // Set the variables using a static method
     self::setMerchantId('***MERCHANTID****');// Enter the merchant ID from the MMS
     self::setMerchantPassword('**PASSWORD**');// Enter the merchant Password from the MMS
     self::setPreSharedKey('**PRESHAREDKEY**');// Enter the pre shared key from the MMS
