@@ -8,7 +8,7 @@ I've added Controller, Model, Event, Mail and Notifications to this. I'm trying 
 This package is still incomplete, due to my busy schedule, but, I'm trying to complete it asap.
 
 You can install this package
-`composer require svodya\payzone`
+`composer require svodya/payzone`
 
 Version `1.0.2`
 
