@@ -15,7 +15,7 @@ class PayZoneServiceProvider extends ServiceProvider
         $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
 
         if ($this->app->runningInConsole()) {
-            if (! class_exists('CreatePostsTable')) {
+            if (! class_exists('CreateConfigurationsTable') || (!class_exists('CreateTransactionsTable'))) {
                 $this->publishes([
                     __DIR__ . '/../database/migrations/create_configurations_table.php.stub' => database_path('migrations/' . date('Y_m_d_His', time()) . '_create_configurations_table.php'),
                     __DIR__ . '/../database/migrations/create_transactions_table.php.stub' => database_path('migrations/' . date('Y_m_d_His', time()) . '_create_transactions_table.php'),
@@ -29,7 +29,7 @@ class PayZoneServiceProvider extends ServiceProvider
             ], 'public');
 
         }
-
+        $this->loadViewsFrom(__DIR__.'/../resources/views', 'payzone');
 
     }
 

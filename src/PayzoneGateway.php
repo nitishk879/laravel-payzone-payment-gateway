@@ -5,11 +5,13 @@ namespace Svodya\PayZone;
 include_once(__DIR__ . "/includes/gateway/constants.php");
 include_once(__DIR__ . "/includes/helpers/payzone_helper.php");
 include_once(__DIR__ . "/includes/helpers/DBDemo.php");
+include_once(__DIR__ . "/includes/helpers/DatabaseHelper.php");
 
+use App\Transaction;
 use Illuminate\Support\Facades\Session;
 use Payzone\Constants as Constants;
 use Payzone\Helper as Helper;
-use Svodya\PayZone\includes\helpers\DBDemo;
+use Svodya\PayZone\includes\helpers\DatabaseHelper;
 
 $PayzoneHelper  = new Helper\PayzoneHelper;
 $PayzoneGateway = new PayzoneGateway;
@@ -499,7 +501,8 @@ class PayzoneGateway
 
     public function buildXHRefund()
     {
-        if (!isset($_POST["OrderID"])) {//Validate information that has been passed across (via $_POST or $_GET) and process the information ready for the next stage of the payment process, including setting all of the variables for the payment handling with the system
+        if (!isset($_POST["OrderID"])) {
+            //Validate information that has been passed across (via $_POST or $_GET) and process the information ready for the next stage of the payment process, including setting all of the variables for the payment handling with the system
         }
         $params = array();
         $Country = (isset($_POST["Country"])) ? $_POST["Country"] : false;
@@ -607,10 +610,12 @@ class PayzoneGateway
     {
 
         $recordTransaction = false;
-//        $recordTransaction = DatabaseHelper::saveTransaction($order_id, $amounttidy, $amountminor, $amountmajor, $currency_code, $crossreference, $statuscode, $type, $transactiondatetime, $message, $this->getIntegrationType2());
-        $recordTransaction = DBDemo::saveTransaction($order_id, $amounttidy, $amountminor, $amountmajor, $currency_code, $crossreference, $statuscode, $type, $transactiondatetime, $message, $this->getIntegrationType2());#DBExample
+        $recordTransaction = DatabaseHelper::saveTransaction($order_id, $amounttidy, $amountminor, $amountmajor, $currency_code, $crossreference, $statuscode, $type, $transactiondatetime, $message, $this->getIntegrationType2());
         if ($recordTransaction) {
-            echo "Transaction saved successfully";
+            $transaction = Transaction::where('order_id', $order_id)->firstOrFail();
+//            event(new \App\Events\TransactionPaymentReceivedEvent($transaction));   #This is fine and working accordingly.
+            event(new \Svodya\PayZone\Events\TransactionPaymentReceivedEvent($transaction));
+            event(new \Svodya\PayZone\Events\OrderReceivedEvent($transaction));
         } else {
             $transMessage = "" .
                 "<div class='payzone-transaction-results payzone-warning'>" .
@@ -645,11 +650,10 @@ class PayzoneGateway
      */
     public function validateResponse3DTransparentResponse($post)
     {
-        $TransactionDateTime = date('Y-m-d H:i:s P'); //timestamp at time of validation instead of time of transaction
+        $TransactionDateTime = date('Y-m-d H:i:s P');
         $CallbackURL = $this->result_page;
         $StringToHash = Helper\PayzoneHelper::generateStringToHash3DSecurePostAuthentication($this->hash_method, $this->pre_shared_key, $this->merchant_id, $this->merchant_password, $post["MD"], $TransactionDateTime, $CallbackURL, $post["PaRes"]);
         $HashDigest = Helper\PayzoneHelper::calculateHashDigest($StringToHash, $this->pre_shared_key, $this->hash_method);
-
         return $HashDigest;
     }
 

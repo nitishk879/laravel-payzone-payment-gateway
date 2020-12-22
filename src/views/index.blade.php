@@ -83,11 +83,4 @@
     </div>
 </div>
 @endsection
-@section('scripts')
-{{--    <script>--}}
-{{--        function submitForms()--}}
-{{--        {--}}
-{{--            withDataForm.submit()--}}
-{{--        }--}}
-{{--    </script>--}}
-@endsection
+@section('scripts')@endsection

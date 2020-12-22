@@ -5,9 +5,6 @@ namespace Svodya\PayZone\Http\Controllers;
 
 require_once (__DIR__."/../../includes/gateway/paymentsystem.php");
 
-use App\Customer;
-use App\Http\Controllers\Controller;
-use App\Order;
 use Illuminate\Http\Request;
 use Payzone\Constants\INTEGRATION_TYPE;
 use Payzone\Constants\PAYZONE_RESPONSE_OUTCOMES;
@@ -170,6 +167,7 @@ class ProcessController extends Controller
                 view('payzone::components.response', compact( 'showResults', 'validate', 'payzoneGateway'));
             }
         }
+
         if ($this->payzoneGateway->getIntegrationType() == INTEGRATION_TYPE::TRANSPARENT ){
             if(isset($_POST["PaREQ"]) && isset($_POST["CrossReference"])){
                 $validate3D = $this->payzoneGateway->validateResponse3DTransparent($_POST);
@@ -192,7 +190,6 @@ class ProcessController extends Controller
                 $validate3D = $this->payzoneGateway->validateResponse3DTransparentResponse($_POST);
             }
         }
-
         return view('payzone::success', compact( 'showResults', 'validate', 'payzoneGateway'));
     }
 }

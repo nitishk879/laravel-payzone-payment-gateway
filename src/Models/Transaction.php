@@ -1,6 +1,6 @@
 <?php
 
-namespace Svodya\PayZone\models;
+namespace Svodya\PayZone\Models;
 
 use Illuminate\Database\Eloquent\Model;
 

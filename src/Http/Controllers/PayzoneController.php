@@ -2,7 +2,6 @@
 
 namespace Svodya\PayZone\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Payzone\Constants\INTEGRATION_TYPE as integrationType;
 use Payzone\Helper\PayzoneHelper;
